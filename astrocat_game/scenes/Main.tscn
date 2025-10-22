@@ -1,0 +1,94 @@
+[gd_scene load_steps=11 format=3 uid="uid://b8jk2qvxhs5yf"]
+
+[ext_resource type="Script" uid="uid://cvyrw268l5quc" path="res://scripts/Board.gd" id="1_board"]
+[ext_resource type="Script" uid="uid://c46tvu3usrnpu" path="res://scripts/Player.gd" id="2_player"]
+[ext_resource type="Texture2D" uid="uid://dqfun2usfj3ti" path="res://art/cube_top.png" id="3_cube"]
+[ext_resource type="Texture2D" uid="uid://c2d65ombnfh3t" path="res://art/astrocat.png" id="4_astrocat"]
+[ext_resource type="Texture2D" uid="uid://b33p0maxtvwv0" path="res://art/astrocat_jump.png" id="5_nxtc6"]
+[ext_resource type="Script" uid="uid://g211f3wcrb18" path="res://scripts/UI.gd" id="6_ui"]
+[ext_resource type="Script" uid="uid://cq8m4n7qax1wr" path="res://scripts/EnemyManager.gd" id="7_enemy_manager"]
+[ext_resource type="Texture2D" uid="uid://1qr52ku6dkhj" path="res://art/hud_bg.png" id="8_hud_bg"]
+[ext_resource type="Texture2D" uid="uid://ey455lvjaypq" path="res://art/water_enemy.png" id="9_water_enemy"]
+[ext_resource type="Texture2D" uid="uid://bdkli1kkcw7o0" path="res://art/water_enemy_move.png" id="10_water_enemy_move"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -100
+position = Vector2(0, -2)
+texture = ExtResource("8_hud_bg")
+centered = false
+
+[node name="Board" type="Node2D" parent="."]
+script = ExtResource("1_board")
+cube_texture = ExtResource("3_cube")
+
+[node name="Cubes" type="Node2D" parent="Board"]
+
+[node name="Player" type="Sprite2D" parent="." groups=["player"]]
+z_index = 100
+scale = Vector2(0.055, 0.055)
+texture = ExtResource("4_astrocat")
+offset = Vector2(0, 20)
+script = ExtResource("2_player")
+board_path = NodePath("../Board")
+idle_texture = ExtResource("4_astrocat")
+jump_texture = ExtResource("5_nxtc6")
+
+[node name="EnemyManager" type="Node2D" parent="."]
+script = ExtResource("7_enemy_manager")
+board_path = NodePath("../Board")
+player_path = NodePath("../Player")
+enemy_texture = ExtResource("9_water_enemy")
+enemy_move_texture = ExtResource("10_water_enemy_move")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(448, 377)
+zoom = Vector2(1.2, 1.2)
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("6_ui")
+
+[node name="LivesLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "Lives: 3"
+
+[node name="ProgressLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 250.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
+text = "Cubes: 0/28"
+
+[node name="Instructions" type="Label" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -80.0
+offset_right = 300.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "Controls: W/↑, A/←, S/↓, D/→ (diagonal movement) - Goal: Step on all cubes to change their color!"
+horizontal_alignment = 1

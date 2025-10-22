@@ -1,0 +1,34 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.history/
+*.code-workspace
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node/Package managers (for godot-mcp and any future tooling)
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Build artifacts
+dist/
+build/
+coverage/
+.parcel-cache/
+.cache/
+
+# Misc
+*.tmp
+*.swp
+*.bak
+
+# Separate project (keep it out of this repo)
+godot-mcp/

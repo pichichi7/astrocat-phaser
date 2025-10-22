@@ -1,0 +1,216 @@
+<!-- 
+    HTML de Debug - Abre esto en el navegador junto con index.html
+    O pegalo en la consola de navegador
+-->
+
+<html>
+<head>
+    <title>AstroCat - Debug Console</title>
+    <style>
+        body {
+            background: #1e1e1e;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        h1 { color: #0088ff; }
+        h2 { color: #ffcc00; }
+        .log { 
+            background: #0a0a0a;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffaa00; }
+        .info { color: #0088ff; }
+        button {
+            background: #004400;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 3px;
+            font-family: 'Courier New';
+        }
+        button:hover { background: #006600; }
+        .section {
+            background: #0a0a0a;
+            border-left: 3px solid #0088ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 3px;
+        }
+        input {
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px;
+            margin: 5px;
+            font-family: 'Courier New';
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎮 AstroCat - Debug Console</h1>
+
+<div class="section">
+    <h2>📋 Estado Actual</h2>
+    <button onclick="checkGameState()">Verificar Estado del Juego</button>
+    <button onclick="checkStorage()">Ver Niveles en localStorage</button>
+    <button onclick="clearLogs()">Limpiar Logs</button>
+</div>
+
+<div class="section">
+    <h2>🧪 Simular Test</h2>
+    <div>
+        <label>Filas: <input type="number" id="rows" value="5" min="3" max="10"></label>
+        <label>Bloques: <input type="text" id="blocks" value="0_0,1_0,1_1"></label>
+        <label>Enemigos: <input type="text" id="enemies" value=""></label>
+        <button onclick="simulateTest()">Simular TEST</button>
+    </div>
+</div>
+
+<div class="section">
+    <h2>📊 Información</h2>
+    <div id="output" class="log"></div>
+</div>
+
+<script>
+function log(msg, type = 'info') {
+    const output = document.getElementById('output');
+    const color = {
+        success: '#00ff00',
+        error: '#ff0000',
+        warning: '#ffaa00',
+        info: '#0088ff'
+    }[type] || '#00ff00';
+    
+    const line = `<span style="color: ${color}">${msg}</span><br>`;
+    output.innerHTML += line;
+    output.scrollTop = output.scrollHeight;
+}
+
+function checkGameState() {
+    log('=== Verificando Estado del Juego ===', 'info');
+    
+    // Check Phaser
+    if (typeof Phaser !== 'undefined') {
+        log('✅ Phaser ' + Phaser.VERSION + ' cargado', 'success');
+    } else {
+        log('❌ Phaser no cargado', 'error');
+        return;
+    }
+    
+    // Check localStorage
+    const stored = JSON.parse(localStorage.getItem('astrocat_levels') || '{}');
+    const levelCount = Object.keys(stored).length;
+    log(`✅ localStorage: ${levelCount} niveles guardados`, 'success');
+    
+    // Check Game Config
+    if (typeof GameConfig !== 'undefined') {
+        log('✅ GameConfig importado', 'success');
+        log(`   Tile Size: ${GameConfig.TILE_WIDTH}x${GameConfig.TILE_HEIGHT}`, 'info');
+        log(`   Player Scale: ${GameConfig.SCALES.PLAYER}`, 'info');
+    } else {
+        log('❌ GameConfig no disponible', 'error');
+    }
+    
+    // Check current scene
+    const scenes = window.game?.scene?.scenes || [];
+    log(`✅ Escenas activas: ${scenes.length}`, 'success');
+    scenes.forEach(s => {
+        log(`   - ${s.key} (activa: ${s.isActive()})`, 'info');
+    });
+}
+
+function checkStorage() {
+    log('=== Contenido de localStorage ===', 'info');
+    
+    try {
+        const levels = JSON.parse(localStorage.getItem('astrocat_levels') || '{}');
+        if (Object.keys(levels).length === 0) {
+            log('❌ No hay niveles guardados', 'warning');
+        } else {
+            Object.entries(levels).forEach(([name, data]) => {
+                const blockCount = Object.keys(data.blocks || {}).length;
+                const enemyCount = (data.enemies || []).length;
+                log(`📦 "${name}": ${data.rows}x${data.rows} filas, ${blockCount} bloques, ${enemyCount} enemigos`, 'info');
+            });
+        }
+    } catch (e) {
+        log(`❌ Error leyendo localStorage: ${e.message}`, 'error');
+    }
+}
+
+function simulateTest() {
+    log('=== Simulando TEST del Editor ===', 'info');
+    
+    const rows = parseInt(document.getElementById('rows').value);
+    const blockStr = document.getElementById('blocks').value;
+    const enemyStr = document.getElementById('enemies').value;
+    
+    // Parse blocks
+    const blocks = {};
+    if (blockStr.trim()) {
+        blockStr.split(',').forEach((b, idx) => {
+            const key = b.trim();
+            blocks[key] = idx % 7; // Tipos 0-6
+        });
+    }
+    
+    // Parse enemies
+    const enemies = [];
+    if (enemyStr.trim()) {
+        enemyStr.split(',').forEach(e => {
+            const [r, c] = e.trim().split('_').map(Number);
+            if (!isNaN(r) && !isNaN(c)) {
+                enemies.push({ row: r, col: c, type: 0 });
+            }
+        });
+    }
+    
+    const customLevel = {
+        name: 'Test Debug',
+        description: 'Nivel de prueba desde Debug Console',
+        rows: rows,
+        blocks: blocks,
+        enemies: enemies,
+        difficulty: 'normal'
+    };
+    
+    log(`📝 Nivel creado:`, 'info');
+    log(`   Filas: ${customLevel.rows}`, 'info');
+    log(`   Bloques: ${Object.keys(blocks).length}`, 'success');
+    log(`   Enemigos: ${enemies.length}`, 'success');
+    log(``, 'info');
+    log(`Datos JSON:`, 'info');
+    log(JSON.stringify(customLevel, null, 2), 'info');
+    
+    // Log para simular lo que EditorScene envía
+    log(``, 'info');
+    log(`📊 Simulación de scene.start():`, 'info');
+    log(`scene.start('GameScene', { customLevel, fromEditor: true })`, 'info');
+}
+
+function clearLogs() {
+    document.getElementById('output').innerHTML = '';
+    log('Logs limpiados', 'success');
+}
+
+// Auto-check on load
+window.addEventListener('load', () => {
+    log('🎮 Debug Console inicializado', 'success');
+    log('Haz clic en los botones para inspeccionar el estado', 'info');
+});
+</script>
+
+</body>
+</html>
