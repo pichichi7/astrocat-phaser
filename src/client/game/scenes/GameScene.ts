@@ -1470,25 +1470,172 @@ export class GameScene extends Phaser.Scene {
     }
 
     private showGameOver(): void {
-        const gameOverText = this.add.text(640, 300, 'GAME OVER', {
-            fontSize: '48px',
+        // Semi-transparent overlay
+        const overlay = this.add.rectangle(640, 360, 1280, 720, 0x000000, 0.85);
+        overlay.setDepth(2999);
+
+        const gameOverText = this.add.text(640, 250, 'GAME OVER', {
+            fontSize: '64px',
             fontFamily: 'Arial',
             color: '#ff0000',
+            fontStyle: 'bold',
             stroke: '#000000',
-            strokeThickness: 4
-        }).setOrigin(0.5).setDepth(2000);
+            strokeThickness: 6
+        }).setOrigin(0.5).setDepth(3000).setAlpha(0);
 
-        const restartText = this.add.text(640, 380, 'Click to restart', {
-            fontSize: '24px',
-            fontFamily: 'Arial',
-            color: '#ffffff',
-            stroke: '#000000',
-            strokeThickness: 2
-        }).setOrigin(0.5).setDepth(2000);
-
-        this.input.once('pointerdown', () => {
-            this.scene.restart();
+        this.tweens.add({
+            targets: gameOverText,
+            alpha: 1,
+            y: 240,
+            duration: 600,
+            ease: 'Back.easeOut'
         });
+
+        // Different buttons if coming from editor
+        if (this.fromEditor) {
+            const subtitle = this.add.text(640, 330, '💀 Better luck next time!', {
+                fontSize: '28px',
+                fontFamily: 'Arial',
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 3
+            }).setOrigin(0.5).setDepth(3000).setAlpha(0);
+
+            this.tweens.add({
+                targets: subtitle,
+                alpha: 1,
+                duration: 500,
+                delay: 300
+            });
+
+            // RETRY button (left)
+            const retryBg = this.add.graphics();
+            retryBg.fillStyle(0xffaa00, 0.95);
+            retryBg.fillRoundedRect(240, 430, 280, 60, 12);
+            retryBg.lineStyle(4, 0xffffff, 1);
+            retryBg.strokeRoundedRect(240, 430, 280, 60, 12);
+            retryBg.setDepth(3001).setAlpha(0);
+
+            const retryText = this.add.text(380, 460, '🔄 RETRY', {
+                fontSize: '28px',
+                fontFamily: 'Arial',
+                color: '#ffffff',
+                fontStyle: 'bold'
+            }).setOrigin(0.5).setDepth(3002).setAlpha(0);
+
+            const retryHitArea = this.add.rectangle(380, 460, 280, 60, 0x000000, 0.01);
+            retryHitArea.setDepth(3003).setInteractive({ useHandCursor: true });
+            
+            retryHitArea.on('pointerdown', () => {
+                console.log('🔄 Retrying level...');
+                this.scene.restart();
+            });
+
+            retryHitArea.on('pointerover', () => {
+                retryText.setScale(1.1);
+                retryBg.clear();
+                retryBg.fillStyle(0xffcc33, 0.95);
+                retryBg.fillRoundedRect(240, 430, 280, 60, 12);
+                retryBg.lineStyle(4, 0xffffff, 1);
+                retryBg.strokeRoundedRect(240, 430, 280, 60, 12);
+            });
+
+            retryHitArea.on('pointerout', () => {
+                retryText.setScale(1.0);
+                retryBg.clear();
+                retryBg.fillStyle(0xffaa00, 0.95);
+                retryBg.fillRoundedRect(240, 430, 280, 60, 12);
+                retryBg.lineStyle(4, 0xffffff, 1);
+                retryBg.strokeRoundedRect(240, 430, 280, 60, 12);
+            });
+
+            this.tweens.add({
+                targets: [retryBg, retryText],
+                alpha: 1,
+                duration: 500,
+                delay: 600
+            });
+
+            // RETURN TO EDITOR button (right)
+            const editorBg = this.add.graphics();
+            editorBg.fillStyle(0x1a1a3a, 0.95);
+            editorBg.fillRoundedRect(540, 430, 320, 60, 12);
+            editorBg.lineStyle(4, 0x00ff00, 1);
+            editorBg.strokeRoundedRect(540, 430, 320, 60, 12);
+            editorBg.setDepth(3001).setAlpha(0);
+
+            const editorText = this.add.text(700, 460, '✏️ RETURN TO EDITOR', {
+                fontSize: '26px',
+                fontFamily: 'Arial',
+                color: '#00ff00',
+                fontStyle: 'bold'
+            }).setOrigin(0.5).setDepth(3002).setAlpha(0);
+
+            const editorHitArea = this.add.rectangle(700, 460, 320, 60, 0x000000, 0.01);
+            editorHitArea.setDepth(3003).setInteractive({ useHandCursor: true });
+            
+            editorHitArea.on('pointerdown', () => {
+                console.log('✏️ Returning to editor from game over...');
+                // Return to editor with preserved level
+                const levelToReturn: LevelData = {
+                    name: this.customLevel?.name || 'Test',
+                    description: this.customLevel?.description || '',
+                    rows: this.customLevel?.rows || this.rows,
+                    blocks: JSON.parse(JSON.stringify(this.customLevel?.blocks || {})),
+                    enemies: JSON.parse(JSON.stringify(this.customLevel?.enemies || [])),
+                    difficulty: this.customLevel?.difficulty || 'normal'
+                };
+                
+                console.log('🔙 Returning to EditorScene with level:', levelToReturn.name);
+                this.scene.start('EditorScene', { level: levelToReturn });
+            });
+
+            editorHitArea.on('pointerover', () => {
+                editorText.setScale(1.1);
+                editorBg.clear();
+                editorBg.fillStyle(0x2a2a5a, 0.95);
+                editorBg.fillRoundedRect(540, 430, 320, 60, 12);
+                editorBg.lineStyle(4, 0x00ff00, 1);
+                editorBg.strokeRoundedRect(540, 430, 320, 60, 12);
+            });
+
+            editorHitArea.on('pointerout', () => {
+                editorText.setScale(1.0);
+                editorBg.clear();
+                editorBg.fillStyle(0x1a1a3a, 0.95);
+                editorBg.fillRoundedRect(540, 430, 320, 60, 12);
+                editorBg.lineStyle(4, 0x00ff00, 1);
+                editorBg.strokeRoundedRect(540, 430, 320, 60, 12);
+            });
+
+            this.tweens.add({
+                targets: [editorBg, editorText],
+                alpha: 1,
+                duration: 500,
+                delay: 600
+            });
+
+        } else {
+            // Normal game over: just restart
+            const restartText = this.add.text(640, 380, 'Click to restart', {
+                fontSize: '28px',
+                fontFamily: 'Arial',
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 3
+            }).setOrigin(0.5).setDepth(3000).setAlpha(0);
+
+            this.tweens.add({
+                targets: restartText,
+                alpha: 1,
+                duration: 500,
+                delay: 300
+            });
+
+            this.input.once('pointerdown', () => {
+                this.scene.restart();
+            });
+        }
     }
 
     private createEnemies(): void {
