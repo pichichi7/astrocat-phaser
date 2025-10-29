@@ -1233,53 +1233,161 @@ export class GameScene extends Phaser.Scene {
             delay: 1000
         });
 
-        // Return to menu button
-        const buttonBg = this.add.graphics();
-        buttonBg.fillStyle(0x1a1a3a, 0.95);
-        buttonBg.fillRoundedRect(490, 530, 300, 60, 12);
-        buttonBg.lineStyle(4, 0x00ff00, 1);
-        buttonBg.strokeRoundedRect(490, 530, 300, 60, 12);
-        buttonBg.setDepth(3001).setAlpha(0);
+        // Buttons: Different layout if coming from editor
+        if (this.fromEditor) {
+            // SHARE LEVEL button (left)
+            const shareBg = this.add.graphics();
+            shareBg.fillStyle(0xff00dd, 0.95);
+            shareBg.fillRoundedRect(240, 530, 280, 60, 12);
+            shareBg.lineStyle(4, 0xffffff, 1);
+            shareBg.strokeRoundedRect(240, 530, 280, 60, 12);
+            shareBg.setDepth(3001).setAlpha(0);
 
-        const menuButtonText = this.add.text(640, 560, '🏠 RETURN TO MENU', {
-            fontSize: '28px',
-            fontFamily: 'Arial',
-            color: '#00ff00',
-            fontStyle: 'bold'
-        }).setOrigin(0.5).setDepth(3002).setAlpha(0);
+            const shareButtonText = this.add.text(380, 560, '📤 SHARE LEVEL', {
+                fontSize: '26px',
+                fontFamily: 'Arial',
+                color: '#ffffff',
+                fontStyle: 'bold'
+            }).setOrigin(0.5).setDepth(3002).setAlpha(0);
 
-        this.tweens.add({
-            targets: [buttonBg, menuButtonText],
-            alpha: 1,
-            duration: 500,
-            delay: 1200
-        });
+            const shareHitArea = this.add.rectangle(380, 560, 280, 60, 0x000000, 0.01);
+            shareHitArea.setDepth(3003).setInteractive({ useHandCursor: true });
+            
+            shareHitArea.on('pointerdown', () => {
+                console.log('📤 Opening share dialog from victory screen...');
+                // Import ShareLevelDialog
+                import('../ui/ShareLevelDialog').then(({ ShareLevelDialog }) => {
+                    const shareDialog = new ShareLevelDialog(this, this.customLevel!);
+                    shareDialog.show((success, postUrl) => {
+                        if (success && postUrl) {
+                            console.log('✅ Level shared from victory screen:', postUrl);
+                        }
+                    });
+                });
+            });
 
-        const buttonHitArea = this.add.rectangle(640, 560, 300, 60, 0x000000, 0.01);
-        buttonHitArea.setDepth(3003).setInteractive({ useHandCursor: true });
-        
-        buttonHitArea.on('pointerdown', () => {
-            console.log('🏠 Returning to menu...');
-            this.scene.start('MenuScene');
-        });
+            shareHitArea.on('pointerover', () => {
+                shareButtonText.setScale(1.1);
+                shareBg.clear();
+                shareBg.fillStyle(0xff33ee, 0.95);
+                shareBg.fillRoundedRect(240, 530, 280, 60, 12);
+                shareBg.lineStyle(4, 0xffffff, 1);
+                shareBg.strokeRoundedRect(240, 530, 280, 60, 12);
+            });
 
-        buttonHitArea.on('pointerover', () => {
-            menuButtonText.setScale(1.1);
-            buttonBg.clear();
-            buttonBg.fillStyle(0x2a2a5a, 0.95);
-            buttonBg.fillRoundedRect(490, 530, 300, 60, 12);
-            buttonBg.lineStyle(4, 0x00ff00, 1);
-            buttonBg.strokeRoundedRect(490, 530, 300, 60, 12);
-        });
+            shareHitArea.on('pointerout', () => {
+                shareButtonText.setScale(1.0);
+                shareBg.clear();
+                shareBg.fillStyle(0xff00dd, 0.95);
+                shareBg.fillRoundedRect(240, 530, 280, 60, 12);
+                shareBg.lineStyle(4, 0xffffff, 1);
+                shareBg.strokeRoundedRect(240, 530, 280, 60, 12);
+            });
 
-        buttonHitArea.on('pointerout', () => {
-            menuButtonText.setScale(1.0);
-            buttonBg.clear();
+            this.tweens.add({
+                targets: [shareBg, shareButtonText],
+                alpha: 1,
+                duration: 500,
+                delay: 1200
+            });
+
+            // RETURN TO EDITOR button (right)
+            const editorBg = this.add.graphics();
+            editorBg.fillStyle(0x1a1a3a, 0.95);
+            editorBg.fillRoundedRect(540, 530, 320, 60, 12);
+            editorBg.lineStyle(4, 0x00ff00, 1);
+            editorBg.strokeRoundedRect(540, 530, 320, 60, 12);
+            editorBg.setDepth(3001).setAlpha(0);
+
+            const editorButtonText = this.add.text(700, 560, '✏️ RETURN TO EDITOR', {
+                fontSize: '26px',
+                fontFamily: 'Arial',
+                color: '#00ff00',
+                fontStyle: 'bold'
+            }).setOrigin(0.5).setDepth(3002).setAlpha(0);
+
+            const editorHitArea = this.add.rectangle(700, 560, 320, 60, 0x000000, 0.01);
+            editorHitArea.setDepth(3003).setInteractive({ useHandCursor: true });
+            
+            editorHitArea.on('pointerdown', () => {
+                console.log('✏️ Returning to editor...');
+                this.nextLevel(); // This already handles fromEditor case
+            });
+
+            editorHitArea.on('pointerover', () => {
+                editorButtonText.setScale(1.1);
+                editorBg.clear();
+                editorBg.fillStyle(0x2a2a5a, 0.95);
+                editorBg.fillRoundedRect(540, 530, 320, 60, 12);
+                editorBg.lineStyle(4, 0x00ff00, 1);
+                editorBg.strokeRoundedRect(540, 530, 320, 60, 12);
+            });
+
+            editorHitArea.on('pointerout', () => {
+                editorButtonText.setScale(1.0);
+                editorBg.clear();
+                editorBg.fillStyle(0x1a1a3a, 0.95);
+                editorBg.fillRoundedRect(540, 530, 320, 60, 12);
+                editorBg.lineStyle(4, 0x00ff00, 1);
+                editorBg.strokeRoundedRect(540, 530, 320, 60, 12);
+            });
+
+            this.tweens.add({
+                targets: [editorBg, editorButtonText],
+                alpha: 1,
+                duration: 500,
+                delay: 1200
+            });
+
+        } else {
+            // RETURN TO MENU button (normal behavior)
+            const buttonBg = this.add.graphics();
             buttonBg.fillStyle(0x1a1a3a, 0.95);
             buttonBg.fillRoundedRect(490, 530, 300, 60, 12);
             buttonBg.lineStyle(4, 0x00ff00, 1);
             buttonBg.strokeRoundedRect(490, 530, 300, 60, 12);
-        });
+            buttonBg.setDepth(3001).setAlpha(0);
+
+            const menuButtonText = this.add.text(640, 560, '🏠 RETURN TO MENU', {
+                fontSize: '28px',
+                fontFamily: 'Arial',
+                color: '#00ff00',
+                fontStyle: 'bold'
+            }).setOrigin(0.5).setDepth(3002).setAlpha(0);
+
+            this.tweens.add({
+                targets: [buttonBg, menuButtonText],
+                alpha: 1,
+                duration: 500,
+                delay: 1200
+            });
+
+            const buttonHitArea = this.add.rectangle(640, 560, 300, 60, 0x000000, 0.01);
+            buttonHitArea.setDepth(3003).setInteractive({ useHandCursor: true });
+            
+            buttonHitArea.on('pointerdown', () => {
+                console.log('🏠 Returning to menu...');
+                this.scene.start('MenuScene');
+            });
+
+            buttonHitArea.on('pointerover', () => {
+                menuButtonText.setScale(1.1);
+                buttonBg.clear();
+                buttonBg.fillStyle(0x2a2a5a, 0.95);
+                buttonBg.fillRoundedRect(490, 530, 300, 60, 12);
+                buttonBg.lineStyle(4, 0x00ff00, 1);
+                buttonBg.strokeRoundedRect(490, 530, 300, 60, 12);
+            });
+
+            buttonHitArea.on('pointerout', () => {
+                menuButtonText.setScale(1.0);
+                buttonBg.clear();
+                buttonBg.fillStyle(0x1a1a3a, 0.95);
+                buttonBg.fillRoundedRect(490, 530, 300, 60, 12);
+                buttonBg.lineStyle(4, 0x00ff00, 1);
+                buttonBg.strokeRoundedRect(490, 530, 300, 60, 12);
+            });
+        }
 
         // Celebration particles
         this.createCelebrationExplosion();
