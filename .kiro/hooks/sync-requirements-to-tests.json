@@ -1,0 +1,13 @@
+{
+  "name": "Requirements-Test Synchronizer",
+  "description": "Updates test files when requirements change",
+  "version": "1",
+  "when": {
+    "type": "fileSaved",
+    "patterns": [".kiro/specs/*/requirements.md"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Scan requirements.md for testable requirements (EARS notation). For each: 1) Check if mapped test exists, 2) If missing, create test skeleton, 3) If requirement changed, update test expectations, 4) Report coverage %."
+  }
+}
