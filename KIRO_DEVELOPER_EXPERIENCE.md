@@ -245,39 +245,6 @@ I've spent my entire self-taught coding journey believing that "real programmers
 
 ---
 
-## For Other Non-Professional Developers
-
-If you're like me—teaching yourself, working on side projects, maybe feeling a bit like an impostor—here's what I'd say:
-
-The gap between "I can code" and "I can build complete projects" isn't more tutorials or fancier AI tools. It's having some kind of structure to work within.
-
-Kiro gave me that structure. It might not be the right structure for everyone, but having SOME system for planning before coding made a huge difference for me.
-
-Try it on one feature. If it helps, great. If it feels like busywork that's slowing you down, don't force it. But at least try planning something out before you code it.
-
----
-
-## Final Thought
-
-I'm writing this at 11pm on deadline night. The submission form is open in another tab. I'm genuinely nervous about whether this is good enough, whether judges will see bugs I missed, whether I should've spent less time on features and more time polishing.
-
-But I'm also weirdly proud that I actually finished something this ambitious. A month ago, I wouldn't have believed I could build a multiplayer puzzle game with a level editor and Reddit integration.
-
-If Kiro's documentation system helped me do that, it's worth sharing.
-
----
-
-**Project:** ASTROCAT - Reddit Puzzle Game  
-**Repository:** https://github.com/pichichi7/astrocat-phaser  
-**Live on Reddit:** https://www.reddit.com/r/astrocatapp_dev/comments/1of5ytu/astrocatapp/  
-**Kiro Specs:** See `.kiro/` folder in the repo
-
-If I win, great. If not, this workflow is mine to keep forever.
-
-Thanks for reading.
-
----
-
 ## Key Insight: Specs Prevent Code Drift
 
 **The biggest win wasn't speed—it was alignment.**
@@ -319,6 +286,39 @@ When implementation diverges from original vision because:
 
 ---
 
+## For Other Non-Professional Developers
+
+If you're like me—teaching yourself, working on side projects, maybe feeling a bit like an impostor—here's what I'd say:
+
+The gap between "I can code" and "I can build complete projects" isn't more tutorials or fancier AI tools. It's having some kind of structure to work within.
+
+Kiro gave me that structure. It might not be the right structure for everyone, but having SOME system for planning before coding made a huge difference for me.
+
+Try it on one feature. If it helps, great. If it feels like busywork that's slowing you down, don't force it. But at least try planning something out before you code it.
+
+---
+
+## Final Thought
+
+I'm writing this at 11:45 AM on deadline day (12 hours before cutoff). The submission form is open in another tab. I'm genuinely nervous about whether this is good enough, whether judges will see bugs I missed, whether I should've spent less time on features and more time polishing.
+
+But I'm also weirdly proud that I actually finished something this ambitious. A month ago, I wouldn't have believed I could build a multiplayer puzzle game with a level editor and Reddit integration.
+
+If Kiro's documentation system helped me do that, it's worth sharing.
+
+---
+
+**Project:** ASTROCAT - Reddit Puzzle Game  
+**Repository:** https://github.com/pichichi7/astrocat-phaser  
+**Live on Reddit:** https://www.reddit.com/r/astrocatapp_dev/comments/1of5ytu/astrocatapp/  
+**Kiro Specs:** See `.kiro/` folder in the repo
+
+If I win, great. If not, this workflow is mine to keep forever.
+
+Thanks for reading.
+
+---
+
 ## Advice for Other Developers
 
 ### When to Use Kiro
@@ -339,15 +339,16 @@ When implementation diverges from original vision because:
 
 ## Final Results
 
-**As of Oct 29, 2025:**
-
+As of Oct 29 (deadline day), I have:
 - A working game with 7 complete scenes
 - A level editor that lets players create and validate their own puzzles
 - Reddit integration that actually works
 - A backend with proper API endpoints
 - Responsive design that looks okay on phones and desktop
 
-It's not perfect. There are definitely bugs I haven't found yet. But it's done, it's functional, and I'm honestly proud of it.
+It's not perfect. There are definitely bugs I haven't found yet. But it's DONE, it's functional, and I'm honestly proud of it.
+
+Without Kiro's structured approach, I genuinely don't think I would've finished. I'd probably still be rewriting the editor for the third time.
 
 ---
 
