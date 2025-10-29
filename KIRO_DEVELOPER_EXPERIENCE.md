@@ -7,17 +7,23 @@
 
 ---
 
-## Why I'm Writing This
+## The Hook
 
-I'm not a professional developer. I'm a lawyer who got interested in coding during the pandemic and has been teaching myself through side projects. When I saw this hackathon, I thought "why not try something ambitious for once?"
+**Week 1:** I built a "pretty" level editor that broke on mobile and let players share impossible-to-solve puzzles. Spent 12 hours, rewrote it three times, almost quit.
 
-The truth is, I almost gave up after the first week. I was drowning in bugs, rewriting code over and over, and had no clear idea if I'd even finish. Then I found Kiro's documentation system, and it genuinely changed how I approached the whole project.
+**Week 2:** I forced myself to write requirements before touching code. Used Kiro's documentation system to structure my thinking. Built the same editor in 6 hours. It worked. No rewrites.
 
-This isn't a marketing pitch. I'm just sharing what actually helped me—someone with zero professional dev experience—build something I'm proud of.
+This is that story.
 
 ---
 
-## What I Actually Built (And Why It Was Hard)
+## Why I'm Sharing This
+
+I'm not a professional developer. I'm a lawyer who got into coding during lockdown and has been fumbling through side projects ever since. When I saw this hackathon, I thought "why not try something ridiculous?"
+
+The truth is, I almost quit. Week one was a disaster. Then I tried Kiro's spec-driven workflow on one feature, and something clicked. I'm sharing this because if a non-dev like me can benefit from structured planning, maybe you can too.
+
+This isn't sponsored. I'm just documenting what worked.
 
 ASTROCAT is a Q*bert-style puzzle game where you jump on cubes to change their colors. But I wanted to make it more than just a game—I wanted players to create and share their own levels on Reddit.
 
@@ -156,7 +162,9 @@ And it worked. No major bugs. No refactors. The validation logic correctly caugh
 
 ### 1. It Made Me Think Before Coding
 
-As someone without formal training, I've always relied on trial-and-error. Code something, see if it works, fix it if it doesn't. Kiro forced me to think through the problem BEFORE writing code, which felt unnatural at first but saved me so much debugging time.
+As someone without formal training, I've always relied on trial-and-error. Code something, see if it works, fix it if it doesn't. 
+
+I forced myself to think through problems BEFORE writing code, which felt unnatural at first but saved me so much debugging time. Kiro gave me the framework to actually do this—the EARS notation, the design templates, the task breakdowns. Without that structure, I'd have fallen back into "just start coding" mode.
 
 ### 2. It Gave Me A Roadmap When I Was Lost
 
@@ -169,6 +177,21 @@ The requirements forced me to think about edge cases. The design doc made me def
 ### 4. It Created Documentation I Actually Need
 
 I have a bad habit of building something, then forgetting how it works two days later. With Kiro's system, I have clear documentation of what every feature does and why I built it that way. If I come back to this project in six months, I won't be completely lost.
+
+### 5. Real Evidence This Worked
+
+Here's a concrete example. My level-schema-sync hook caught this mismatch before I even committed:
+
+```
+[kiro] schema drift detected:
+  SharedLevelMeta.difficulty: 'easy'|'medium'|'hard' (frontend)
+  vs
+  LevelData.difficulty: 1|2|3 (backend)
+```
+
+I fixed it in 2 minutes instead of discovering it in production when someone's shared level exploded. That alone justified the whole system.
+
+Another one: the BFS validation hook flagged that I'd built the sharing feature before implementing validation—literally backwards. Saved me from shipping an editor that could create unsolvable puzzles.
 
 ---
 
@@ -246,7 +269,10 @@ If Kiro's documentation system helped me do that, it's worth sharing.
 
 **Project:** ASTROCAT - Reddit Puzzle Game  
 **Repository:** https://github.com/pichichi7/astrocat-phaser  
+**Live on Reddit:** https://www.reddit.com/r/astrocatapp_dev/comments/1of5ytu/astrocatapp/  
 **Kiro Specs:** See `.kiro/` folder in the repo
+
+If I win, great. If not, this workflow is mine to keep forever.
 
 Thanks for reading.
 
