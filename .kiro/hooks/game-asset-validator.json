@@ -1,0 +1,13 @@
+{
+  "name": "Game Asset Validator",
+  "description": "Validates new game assets follow isometric projection rules",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": ["public/assets/**/*.png"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Validate this asset follows isometric game standards (2:1 ratio for tiles). Check dimensions and flag any assets that don't meet isometric projection requirements for Q*bert-style gameplay."
+  }
+}

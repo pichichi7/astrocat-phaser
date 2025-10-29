@@ -1,0 +1,13 @@
+{
+  "name": "Level Schema Synchronizer",
+  "description": "Keeps frontend-backend level format synchronized",
+  "version": "1",
+  "when": {
+    "type": "fileSaved",
+    "patterns": ["src/scenes/EditorScene.ts", "src/types/Level.ts"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if level validation logic changed. If yes, ensure backend schema in server/models/Level.ts and API validation in server/routes/levels.ts stay synchronized with frontend types. Update both if needed."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Gameplay Analytics Suggester",
+  "description": "Suggests telemetry events for new game mechanics",
+  "version": "1",
+  "when": {
+    "type": "fileSaved",
+    "patterns": ["src/scenes/GameScene.ts"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Detect new gameplay mechanics added to GameScene. For each new mechanic, suggest relevant telemetry events to track player behavior: event name, data schema, when to fire."
+  }
+}
