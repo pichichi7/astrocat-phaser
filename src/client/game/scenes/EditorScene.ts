@@ -179,12 +179,12 @@ export class EditorScene extends Phaser.Scene {
         );
         outline.setDepth(999);
         
-        // Agregar al worldContainer para que se mueva con la pir·mide
+        // Agregar al worldContainer para que se mueva con la pirÔøΩmide
         this.worldContainer.add(outline);
         
         this.currentHighlight = outline;
         
-        // AnimaciÛn pulsante
+        // AnimaciÔøΩn pulsante
         this.tweens.add({
             targets: outline,
             alpha: { from: 1, to: 0.5 },
@@ -231,6 +231,8 @@ export class EditorScene extends Phaser.Scene {
     }
 
     init(data?: { level?: LevelData }): void {
+        console.log('üìù [EditorScene] init() called with data:', data);
+        
         this.editingLevel = data?.level ? JSON.parse(JSON.stringify(data.level)) : null;
         this.currentRows = data?.level?.rows || 7;
         this.selectedBlockType = EDITOR_BLOCK_TYPES.NORMAL;
@@ -243,8 +245,13 @@ export class EditorScene extends Phaser.Scene {
         
         if (this.editingLevel) {
             console.log('üìù [EditorScene] init() - Editing level:', this.editingLevel);
+            console.log('   Name:', this.editingLevel.name);
+            console.log('   Rows:', this.editingLevel.rows);
             console.log('   Blocks:', Object.keys(this.editingLevel.blocks || {}).length);
             console.log('   Enemies:', (this.editingLevel.enemies || []).length);
+            console.log('   Blocks content:', this.editingLevel.blocks);
+        } else {
+            console.log('üìù [EditorScene] init() - No editing level, starting fresh');
         }
     }
 
@@ -319,7 +326,7 @@ export class EditorScene extends Phaser.Scene {
         const height = this.scale.height;
         const aspectRatio = width / height;
         
-        // Detectar mobile por tamaÒo del canvas, no por window
+        // Detectar mobile por tamaÔøΩo del canvas, no por window
         this.isMobile = width < 768 || aspectRatio < 1;
     }
 
@@ -351,22 +358,22 @@ export class EditorScene extends Phaser.Scene {
     private layoutWorld(viewportWidth: number, viewportHeight: number): void {
         if (!this.worldContainer) return;
 
-        // Dimensiones de UI m·s compactas
+        // Dimensiones de UI mÔøΩs compactas
         const topUI = 50;
         const bottomUI = 70;
-        const sideUI = this.isMobile ? 0 : 180; // Panel derecho m·s estrecho
+        const sideUI = this.isMobile ? 0 : 180; // Panel derecho mÔøΩs estrecho
 
-        // Calcular el ·rea disponible para el juego
+        // Calcular el ÔøΩrea disponible para el juego
         const availableWidth = viewportWidth - sideUI - 20; // 20px padding
         const availableHeight = viewportHeight - topUI - bottomUI - 20;
 
-        // Calcular el centro de la pir·mide en coordenadas ISO
-        // La pir·mide va de row 0 a currentRows-1
+        // Calcular el centro de la pirÔøΩmide en coordenadas ISO
+        // La pirÔøΩmide va de row 0 a currentRows-1
         const centerRow = (this.currentRows - 1) / 2;
         const centerCol = centerRow / 2; // Centro en la mitad de la fila central
         const pyramidCenter = GameUtils.isoToScreen(centerRow, centerCol);
 
-        // TamaÒo estimado de la pir·mide para el escalado
+        // TamaÔøΩo estimado de la pirÔøΩmide para el escalado
         const cubeSize = 80;
         const pyramidWidth = this.currentRows * cubeSize;
         const pyramidHeight = this.currentRows * cubeSize * 0.6;
@@ -383,7 +390,7 @@ export class EditorScene extends Phaser.Scene {
         const centerX = sideUI + (availableWidth / 2);
         const centerY = topUI + (availableHeight / 2);
 
-        // Posicionar el container de forma que el centro de la pir·mide quede en centerX, centerY
+        // Posicionar el container de forma que el centro de la pirÔøΩmide quede en centerX, centerY
         this.worldContainer.setPosition(
             centerX - (pyramidCenter.x * optimalScale),
             centerY - (pyramidCenter.y * optimalScale)
@@ -481,9 +488,9 @@ export class EditorScene extends Phaser.Scene {
     }
 
     private createDesktopUI(width: number, height: number): void {
-        // Dimensiones de UI m·s compactas y fijas
+        // Dimensiones de UI mÔøΩs compactas y fijas
         const topHeight = 50;
-        const panelWidth = 180; // Panel derecho m·s estrecho
+        const panelWidth = 180; // Panel derecho mÔøΩs estrecho
         const bottomHeight = 70;
 
         // Compact top bar
@@ -514,7 +521,7 @@ export class EditorScene extends Phaser.Scene {
         // Validation indicator (top right)
         // Will be created by autoValidate
 
-        // === PANEL DERECHO (m·s estrecho y pulido) ===
+        // === PANEL DERECHO (mÔøΩs estrecho y pulido) ===
         const panelX = width - panelWidth;
         const panelHeight = height - topHeight;
 
@@ -831,13 +838,13 @@ export class EditorScene extends Phaser.Scene {
     }
 
     private createModernButton(x: number, y: number, label: string, callback: () => void, tooltip?: string): Phaser.GameObjects.Rectangle {
-        // Botones 25% m·s grandes
+        // Botones 25% mÔøΩs grandes
         const width = 125;
         const height = 44;
         
         // Colores vibrantes basados en el label
         const vibrantColors: Record<string, number> = {
-            'TEST': 0x00ff41,    // Verde neÛn
+            'TEST': 0x00ff41,    // Verde neÔøΩn
             'SAVE': 0x00b4ff,    // Azul brillante
             'SHARE': 0xff00dd,   // Magenta vibrante
             'CLEAR': 0xff1744,   // Rojo intenso
@@ -848,7 +855,7 @@ export class EditorScene extends Phaser.Scene {
         const labelKey = label.replace(/[^\w\s]/g, '').trim();
         const baseColor = vibrantColors[labelKey] || 0x0066aa;
         
-        // Sombra m·s pronunciada
+        // Sombra mÔøΩs pronunciada
         const shadow = this.add.graphics();
         shadow.fillStyle(0x000000, 0.6);
         shadow.fillRoundedRect(x - width/2 + 3, y - height/2 + 3, width, height, 10);
@@ -856,13 +863,13 @@ export class EditorScene extends Phaser.Scene {
         shadow.setScrollFactor(0);
         this.uiContainers.push(shadow as any);
         
-        // Background m·s brillante
+        // Background mÔøΩs brillante
         const btn = this.add.rectangle(x, y, width, height, baseColor, 0.95);
         btn.setDepth(100);
         btn.setScrollFactor(0);
         btn.setInteractive({ useHandCursor: true });
         
-        // Borde brillante m·s grueso
+        // Borde brillante mÔøΩs grueso
         const border = this.add.graphics();
         border.lineStyle(3, 0xffffff, 0.6);
         border.strokeRoundedRect(x - width/2, y - height/2, width, height, 10);
@@ -870,7 +877,7 @@ export class EditorScene extends Phaser.Scene {
         border.setScrollFactor(0);
         this.uiContainers.push(border as any);
         
-        // Texto m·s grande con stroke
+        // Texto mÔøΩs grande con stroke
         const btnText = this.createReadableText(x, y, label, 
             this.isMobile ? '13px' : '16px', '#ffffff');
         btnText.setOrigin(0.5).setDepth(102).setScrollFactor(0);
@@ -1099,7 +1106,7 @@ export class EditorScene extends Phaser.Scene {
             this.hoverSprite = this.add.sprite(screenPos.x, screenPos.y, 'cube');
             this.hoverSprite.setOrigin(0.5, 0.5);
             this.hoverSprite.setDepth(999);
-            // IMPORTANTE: Agregar al worldContainer para que se mueva con Èl
+            // IMPORTANTE: Agregar al worldContainer para que se mueva con ÔøΩl
             this.worldContainer.add(this.hoverSprite);
         } else {
             this.hoverSprite.setPosition(screenPos.x, screenPos.y);
@@ -1592,9 +1599,19 @@ export class EditorScene extends Phaser.Scene {
     }
 
     private shareLevelDialog(): void {
+        console.log('üì§ [EditorScene] shareLevelDialog() called');
+        console.log('   Current state:');
+        console.log('   - levelName:', this.levelName);
+        console.log('   - currentRows:', this.currentRows);
+        console.log('   - blocks:', Object.keys(this.blocks).length, 'blocks');
+        console.log('   - enemies:', this.enemies.length, 'enemies');
+        console.log('   - blocks content:', this.blocks);
+        console.log('   - enemies content:', this.enemies);
+        
         const validation = this.validateLevel();
 
         if (!validation.valid) {
+            console.log('‚ùå [EditorScene] Validation failed:', validation.errors);
             this.showFlashMessage(
                 `‚ùå Cannot share invalid level:\n${validation.errors.join('\n')}`,
                 0xff0000,
@@ -1603,26 +1620,36 @@ export class EditorScene extends Phaser.Scene {
             return;
         }
 
-        // Prepare level data for sharing
+        // üî• CRITICAL: Deep copy to prevent mutations during sharing
         const levelData: LevelData = {
             name: this.levelName || 'My Astrocat Level',
             description: 'A custom level created in the Astrocat editor',
             rows: this.currentRows,
-            blocks: this.blocks,
-            enemies: this.enemies,
+            blocks: JSON.parse(JSON.stringify(this.blocks)), // Deep copy
+            enemies: JSON.parse(JSON.stringify(this.enemies)), // Deep copy
             difficulty: 'normal'
         };
+
+        console.log('üì§ [EditorScene] Prepared level data for sharing (deep copied):', levelData);
 
         // Create and show share dialog
         const shareDialog = new ShareLevelDialog(this, levelData);
         shareDialog.show((success, postUrl) => {
             if (success && postUrl) {
+                console.log('‚úÖ [EditorScene] Level shared successfully:', postUrl);
                 this.showFlashMessage(
                     `‚úÖ Level shared!\nüåê ${postUrl}`,
                     0x00ff00,
                     4000
                 );
+            } else {
+                console.log('‚ùå [EditorScene] Share failed or cancelled');
             }
+            
+            // üî• Verify state after sharing
+            console.log('üîç [EditorScene] State after share dialog closed:');
+            console.log('   - blocks:', Object.keys(this.blocks).length);
+            console.log('   - enemies:', this.enemies.length);
         });
     }
 
