@@ -1,12 +1,8 @@
 {
   "mcpServers": {
-    "godot": {
-      "command": "node",
-      "args": ["C:\\Users\\Sebiche\\Desktop\\AstroCat\\godot-mcp\\build\\index.js"],
-      "env": {
-        "DEBUG": "true",
-        "GODOT_PATH": "C:\\Users\\Sebiche\\Downloads\\Godot_v4.4.1-stable_win64.exe"
-      }
+    "devvit-mcp": {
+      "command": "npx",
+      "args": ["-y", "@devvit/mcp"]
     }
   }
 }

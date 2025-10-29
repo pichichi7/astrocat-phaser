@@ -1,45 +1,34 @@
-# Astrocat Phaser + Level Editor
+## Devvit Phaser Starter
 
-Juego isométrico estilo Q*bert hecho con Phaser, con Editor de Niveles en el navegador. El juego vive en `ASTROCAT/` y puede publicarse directo en GitHub Pages sin build.
+A starter to build web applications on Reddit's developer platform
 
-## Estructura rápida
-- `ASTROCAT/` — juego web (index.html, assets y `src/`)
-- `godot-mcp/` — proyecto aparte (Node/TS) no requerido para ejecutar el juego
-- `.github/workflows/deploy-pages.yml` — despliegue automático a GitHub Pages desde `ASTROCAT/`
+- [Devvit](https://developers.reddit.com/): A way to build and deploy immersive games on Reddit
+- [Vite](https://vite.dev/): For compiling the webView
+- [Phaser](https://phaser.io/): 2D game engine
+- [Express](https://expressjs.com/): For backend logic
+- [Typescript](https://www.typescriptlang.org/): For type safety
 
-## Ejecutar localmente
-Opción 1: VS Code Live Server (recomendado). Abre `ASTROCAT/index.html`.
+## Getting Started
 
-Opción 2 (opcional): servidor estático simple.
+> Make sure you have Node 22 downloaded on your machine before running!
 
-```powershell
-# Opcional si tienes Node
-npx http-server ASTROCAT -p 8080
-# Navega a http://localhost:8080
-```
+1. Run `npm create devvit@latest --template=phaser`
+2. Go through the installation wizard. You will need to create a Reddit account and connect it to Reddit developers
+3. Copy the command on the success page into your terminal
 
-## Subir a GitHub y publicar en Pages
-1) Crea un repo en GitHub (por ejemplo `astrocat-phaser`).
-2) Inicializa git, haz commit y sube. Esto crea el historial y dispara el workflow de Pages.
+## Commands
 
-```powershell
-# Opcional: desde la carpeta del proyecto
-git init
-git add .
-git commit -m "Initial commit: Astrocat + editor"
-# Sustituye TU_USUARIO y REPO
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/REPO.git
-git push -u origin main
-```
+- `npm run dev`: Starts a development server where you can develop your application live on Reddit.
+- `npm run build`: Builds your client and server projects
+- `npm run deploy`: Uploads a new version of your app
+- `npm run launch`: Publishes your app for review
+- `npm run login`: Logs your CLI into Reddit
+- `npm run check`: Type checks, lints, and prettifies your app
 
-3) En GitHub → Settings → Pages, selecciona “Source: GitHub Actions”.
-4) El workflow `Deploy Astrocat to GitHub Pages` publicará `ASTROCAT/`. La URL queda en el job output o en la sección Pages del repositorio.
+## Cursor Integration
 
-## Notas
-- No hay paso de build: se sirve estático desde `ASTROCAT/`.
-- La acción ignora todo lo demás y sólo sube el contenido de `ASTROCAT/`.
-- Si cambias la carpeta del juego, actualiza `path:` en `.github/workflows/deploy-pages.yml`.
+This template comes with a pre-configured cursor environment. To get started, [download cursor](https://www.cursor.com/downloads) and enable the `devvit-mcp` when prompted.
 
-## Licencia
-Consulta `LICENSE` si aplica o añade una licencia a la raíz del repo.
+## Credits
+
+Thanks to the Phaser team for [providing a great template](https://github.com/phaserjs/template-vite-ts)!

@@ -1,0 +1,23 @@
+{
+  "name": "Pre-commit TypeScript Validation",
+  "description": "Validates TypeScript compilation before allowing commits",
+  "trigger": "pre-commit",
+  "actions": [
+    {
+      "type": "command",
+      "command": "tsc --noEmit",
+      "description": "Check TypeScript compilation without emitting files",
+      "failOnError": true
+    },
+    {
+      "type": "command",
+      "command": "eslint ./src --max-warnings 0",
+      "description": "Lint TypeScript files with zero tolerance for warnings",
+      "failOnError": false
+    }
+  ],
+  "outputs": {
+    "success": "✅ TypeScript validation passed - safe to commit",
+    "failure": "❌ TypeScript errors detected - fix before committing"
+  }
+}
